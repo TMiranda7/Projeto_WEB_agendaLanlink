@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Contatos";
+}
+
+@model List<Pessoa>;
+
+<h3>@ViewData["Contatos"]</h3>
+
+<div class="form-group">
+    <a class="btn btn-success" asp-controller="Home" asp-action="cadastro">
+        Adicionar
+    </a>
+</div>
+
+<div id="my-carousel" class="carousel slide" data-ride="carousel">
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+
+        @{
+            const int TAMANHO_PAGINA = 4;
+
+            int paginas = (int)Math.Ceiling((double)Model.Count() / TAMANHO_PAGINA);
+        }
+
+        @for (int pagina = 0; pagina < paginas; pagina++)
+        {
+
+            <div class="item @(pagina == 0 ? "active" : "")">
+                <div class="row">
+
+                    @{
+                        var pessoasDaPagina = Model.Skip(pagina * TAMANHO_PAGINA).Take(TAMANHO_PAGINA);
+                    }
+
+                    @foreach (var pessoa in pessoasDaPagina)
+                    {
+
+                        <div class="col-md-3 col-sm-3 col-lg-3">
+                            <div class="panel panel-default">
+                                <div class="panel-footer produto-footer">
+                                    <div class="produto-nome"><strong>@pessoa.nome</strong></div>
+                                    <div class="produto-nome"><strong>@pessoa.celular</strong></div>
+                                    <div class="produto-nome"><strong>@pessoa.email</strong></div>
+                                    <a class="btn btn-warning" asp-controller="Home" data-url="@Url.Action($"cadastrar/{pessoa.Id}")" asp-route-id="@pessoa.Id" asp-action="cadastro">
+                                        Editar
+                                    </a>
+                                    <!--<button type="button" class="btn btn-primary" > Editar </button>-->
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+        }
+    </div>
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#my-carousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#my-carousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
